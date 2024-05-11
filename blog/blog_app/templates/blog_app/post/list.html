@@ -1,0 +1,9 @@
+{% extends "blog_app/base.html" %}
+{% block title %}Blog Site{% endblock title %}
+{% block content %}
+    {% for post in posts %}
+        <h1><a href="{% url 'blog_app:post_detail' post.id %}">{{ post.title }}</a></h1>
+        <p class="date">Published on {{ post.publish }}</p>
+        <p>{{ post.body|truncatewords:30|linebreaks }}</p>
+    {% endfor %}
+{% endblock content %}
