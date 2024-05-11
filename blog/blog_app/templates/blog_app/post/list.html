@@ -2,8 +2,9 @@
 {% block title %}Blog Site{% endblock title %}
 {% block content %}
     {% for post in posts %}
-        <h1><a href="{% url 'blog_app:post_detail' post.id %}">{{ post.title }}</a></h1>
+        <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
         <p class="date">Published on {{ post.publish }}</p>
         <p>{{ post.body|truncatewords:30|linebreaks }}</p>
     {% endfor %}
+    {% include "blog_app/pagination.html" with page=posts %}
 {% endblock content %}
