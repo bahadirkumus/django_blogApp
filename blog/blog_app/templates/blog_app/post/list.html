@@ -1,10 +1,26 @@
 {% extends "blog_app/base.html" %}
+{% load static %}
 {% block title %}Blog Site{% endblock title %}
 {% block content %}
-    {% for post in posts %}
-        <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
-        <p class="date">Published on {{ post.publish }}</p>
-        <p>{{ post.body|truncatewords:30|linebreaks }}</p>
-    {% endfor %}
+{% for post in posts %}
+<div class = "">
+    <div class="card mb-3" style="min-height: 180px;">
+        <div class="row g-0">
+            <div class="col-md-2 text-center">
+                <img src="{% static "/images/blog.png" %}" class="img-fluid rounded-start" style="max-height: 180px;" alt="{{ post.title }}">
+            </div>
+            <div class="col-md-10">
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                    <h5 class="card-title"><a href="{{ post.get_absolute_url }}" style="text-decoration: none">{{ post.title }}</a></h5>
+                    <p class="card-text">{{ post.body|truncatewords:30|linebreaks }}</p>
+                    <p class="card-text"><small class="text-body-secondary">Published on {{ post.publish }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class = "d-flex justify-content-center">
     {% include "blog_app/pagination.html" with page=posts %}
+</div>
 {% endblock content %}

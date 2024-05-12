@@ -1,9 +1,43 @@
 {% extends "blog_app/base.html" %}
 {% block title %}{{post.title}}{% endblock title %}
 {% block content %}
-  <h1>{{ post.title }}</h1>
+  <div style="display: flex;">
+    <div style="flex: 1;"><h1>{{ post.title }}</h1></div>
+    <div style="">
+      <p>
+        <a href="{% url "blog_app:post_share" post.id %}">
+          <button type="button" class="btn btn-success">Share via email</button>
+        </a>
+      </p>
+    </div>
+  </div>
   <p class="date">
     Published {{ post.publish }} by {{ post.author }}
   </p>
   {{ post.body|linebreaks }}
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-6">
+      {% with comments.count as total_comments %}
+        <h2>
+          {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+      {% endwith %}
+      {% for comment in comments %}
+        <div class="comment">
+          <p class="info text-body-secondary">
+            Comment {{ forloop.counter }} by {{ comment.name }}
+            {{ comment.created }}
+          </p>
+          {{ comment.body|linebreaks }}
+        </div>
+      {% empty %}
+        <p>There are no comments.</p>
+      {% endfor %}
+    </div>
+    <div class="col-md-6" style="border-left: 1px solid #ccc; padding-left: 15px;">
+      {% include "blog_app/post/include/comment_form.html" %}
+    </div>
+  </div>
 {% endblock %}
