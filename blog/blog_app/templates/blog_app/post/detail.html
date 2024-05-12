@@ -1,4 +1,6 @@
 {% extends "blog_app/base.html" %}
+{% load blog_tags %}
+{% load static %}
 {% block title %}{{post.title}}{% endblock title %}
 {% block content %}
   <div style="display: flex;">
@@ -14,7 +16,7 @@
   <p class="date">
     Published {{ post.publish }} by {{ post.author }}
   </p>
-  {{ post.body|linebreaks }}
+  {{ post.body|markdown }}
   <br>
   <br>
   <div class="row">
@@ -39,5 +41,26 @@
     <div class="col-md-6" style="border-left: 1px solid #ccc; padding-left: 15px;">
       {% include "blog_app/post/include/comment_form.html" %}
     </div>
+  </div>
+  <br>
+  <h2>Similar posts</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for post in similar_posts %}
+      <div class="col">
+        <div class="card h-100">
+          <img src="{% static "/images/blog.png" %}" class="img- rounded-start" style="max-height: 200px; max-width: 200px;" alt="{{ post.title }}">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ post.get_absolute_url }}" style="text-decoration: none">{{ post.title }}</a></h5>
+            <p class="card-text">{{ post.body }}</p>
+          </div>
+          <div class="card-footer">
+            <small class="text-body-secondary">Last updated {{ post.updated }} ago</small>
+          </div>
+        </div>
+        <br>
+      </div>
+    {% empty %}
+      <p>There are no similar posts yet.</p>
+    {% endfor %}
   </div>
 {% endblock %}
